@@ -1,5 +1,5 @@
 1. As a Librarian, I want to be able to execute scripts to collect and store links between news sites, so that it can be used for further analysis.
-2. As a Librarian, I want the capability to directly edit the input URLs, so that I can ensure the reliability and usability of researcher’s input.
+2. As a Librarian, I want the capability to directly edit the input URLs, so that I can ensure the reliability and usability of researcher's input.
 3. As a Librarian, I want the capability to directly edit the configuration file for determining exclusions, so that result will not include irrelevant data.
 4. As a Librarian, I want the capability to directly edit the depth and size limit of which makes application halt, so that I have full control of the volume of data to store.
 5. As a Librarian, I want the capability to directly edit the configuration file for micro settings, so that I can optimize the output of the program.
@@ -11,4 +11,3 @@
 11. As a Librarian, I want the application to use open standards, so that it will be effortless to modify and understand by anyone.
 12. As a Librarian, I want the application to use Web ARChive (WARC) file format, so that it is compatible with my working environment.
 13. As a Librarian, I want to have full permission to modify the application, so that my workers and I can manage the application after production.
-
