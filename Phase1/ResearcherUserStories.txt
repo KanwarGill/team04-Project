@@ -1,6 +1,6 @@
 1.As a Researcher, I want to login to with my user ID and password, so that I can subscriber content.
 2.As a Researcher, I want to be able to reset my password with security information, so that I can set new password if I forget the old one.
-3.As a Researcher, I want to logout automatically after a period of time, so that the collected data won¡¯t be seen by someone else.
+3.As a Researcher, I want to logout automatically after a period of time, so that the collected data won't be seen by someone else.
 4.As a Researcher, I want to input an article or key words, so that I can see the result based on the input.
 5.As a Researcher, I want to define a list of global English-language news sources to monitor, so that I can set the scope of my research.
 6.As a Researcher, I would like to browse available global English-language news sources, so that I can select what I want to monitor. 
@@ -8,8 +8,7 @@
 8.As a Researcher, I want to be able to view statistics of the collected data, so that I can make use of statistics in my research.
 9.As a Researcher, I want to be able to view the collected data in interactive visualizations, so that I am more efficient in my analysis and presentation of the data.
 10.As a Researcher, I want to switch visualizations so that I can analyse data in different aspects.
-11.As a Researcher,I want to have a auto notification feature, so that I won¡¯t miss any my interested topic news I have set in the computer.
+11.As a Researcher,I want to have a auto notification feature, so that I won't miss any my interested topic news I have set in the computer.
 12.As a Researcher,I want to help button, so that they non technological-savvy can ask for help easily.
 13.As a Researcher,I want to to have a sorting feature, so that I could get my information faster and organized.
 14.As a Researcher,I want to have a search feature, so that I could find my information more efficiently
-
