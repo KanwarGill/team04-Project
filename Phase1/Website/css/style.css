@@ -346,6 +346,14 @@
 					width: auto;
 				}
 
+	/* Video */
+
+	.stylevideo 
+	{ 
+		margin: 0 auto;
+		text-align: center;
+	}
+
 	/* Button */
 
 		input[type="button"],
