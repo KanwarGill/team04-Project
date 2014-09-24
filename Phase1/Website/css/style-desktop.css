@@ -154,15 +154,15 @@
 			float: left;
 			margin: 0 0.35em 0 0;
 			padding: 0.25em 0.2em 0.25em 0.2em;
-			font-size: 3.25em;
+			font-size: 4em;
 			letter-spacing: 0.05em;
 		}
 
 		#logo span
 		{
-			line-height: 4.5em;
-			letter-spacing: 0.025em;
-			font-size: 0.9em;
+			line-height: 4.0em;
+			letter-spacing: 0.02em;
+			font-size: 1.2em;
 		}
 
 /*********************************************************************************/
