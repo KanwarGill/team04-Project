@@ -66,12 +66,10 @@ def download_articles(populated_sites):
             print "Title:    ", title
 
             if not ((title == "") or (title == "Page not found")):
-                keywords = get_keywords(art, ['Israel', 'Soccer', 'Doctor', 'fail', 'FaIL', 'kiLLED', 'name', 'ebola'])      # keyword   Done
+                keywords = get_keywords(art, ['Israel', 'Soccer', 'Doctor', 'fail', 'FaIL', 'kiLLED', 'name', 'ebola'])
                 #print get_keywords(art, db.get_keywords())
-                matched_sources = get_sources(art, ["cnn.com", "nytimes.com", 'go.com', 'bulls.com'])                          # sources   Done
+                matched_sources = get_sources(art, ["cnn.com", "nytimes.com", 'go.com', 's.com'])
                 if not (keywords == [] and matched_sources == []):
-
-
                     url =  art.url                                   # url       Done
                     authors = art.authors                               # author    Done
                     date = get_date(art)                             # date      Done
@@ -80,7 +78,7 @@ def download_articles(populated_sites):
                     print "URL:      ", url
                     print "Author:   ", authors
                     print "Date:     ", date
-                    print "Metadata: ", art.meta_data
+                    # print "Metadata: ", art.meta_data
                     print "Keywords: ", keywords
                     print "Sources:  ", matched_sources
                     added += 1
@@ -97,59 +95,67 @@ def download_articles(populated_sites):
             print ("%is"%(time.time() - start))
             print ("\n=============================================================================================\n")
 
-
-# def get_sources(article):
-#     sc, sp, ep = 20, 0, 0
-#     html = re.sub('<[^((a|link).*?href)].*?>', ".", article.html)
-#
-#     start = article.text[:sc]
-#     end = article.text[-sc:]
-#     start = re.sub("[^0-9a-zA-Z ]+", ".", start)
-#     end = re.sub("[^0-9a-zA-Z ]+", ".", end)
-#
-#     while ("." in start and sp < len(article.text)):
-#         start = article.text[sp:sc+sp]
-#         start = re.sub("[^0-9a-zA-Z ]+", ".", start)
-#         sp+=1
-#
-#     while ("." in end and ep < len(article.text)):
-#         end = article.text[min(-ep, -1)-sc:min(-ep, -1)]
-#         end = re.sub("[^0-9a-zA-Z ]+", ".", end)
-#         ep+=1
-#
-#     # print "FS: %2i - '%s'\n" \
-#     #       "ES: %2i - '%s'"%(sp, start, ep, end)
-#     regex = "(?=(" + start + ".*?" + end + "))"
-#     try:
-#         text_html =  min(re.findall(regex, html, re.DOTALL), key=len)
-#         urls = re.findall("href=[\"\'].*?[\"\']", text_html)
-#         for i in range(len(urls) - 1):
-#             urls[i] = urls[i][6:-1]
-#     except:
-#         urls = 'Failed'
-#     return urls
-#
-# def match_sources(urls, sites):
-#     matched_sources = []
-#     for url in urls:
-#         for site in sites:
-#             if site not in matched_sources:
-#                 if re.search(site, url, re.IGNORECASE):
-#                     matched_sources.append(url)
-#     return matched_sources
-
 def get_sources(article, sites):
-    ''' Searches and returns links redirected to sites within the article
+    ''' Searches and returns links redirected to sites within the html of the article
+        If Extracting html of the article fails, search within the whole html instead
         Returns empty list if none found
 
     Keyword arguments:
     article         -- 'Newspaper.Article' object of article
     sites           -- List of site urls to look for
     '''
+    html = get_text_html(article)
+    if html == 'Failed':
+        html = article.html
+    return get_sources_from_html(html, sites)
+
+def get_text_html(article):
+    ''' Tries to extract and returns the html of the text of the article with
+        irrelevant tags removed
+        Returns 'Failed' otherwise
+
+        Keyword arguments:
+        article     -- 'Newspaper.Article' object of article
+        '''
+    sc, sp, ep = 20, 0, 0
+
+
+    start = article.text[:sc]
+    end = article.text[-sc:]
+    start = re.sub("[^0-9a-zA-Z ]+", ".", start)
+    end = re.sub("[^0-9a-zA-Z ]+", ".", end)
+
+    while ("." in start and sp < len(article.text)):
+        start = article.text[sp:sc+sp]
+        start = re.sub("[^0-9a-zA-Z ]+", ".", start)
+        sp+=1
+
+    while ("." in end and ep < len(article.text)):
+        end = article.text[min(-ep, -1)-sc:min(-ep, -1)]
+        end = re.sub("[^0-9a-zA-Z ]+", ".", end)
+        ep+=1
+
+    # print "FS: %2i - '%s'\n" \
+    #       "ES: %2i - '%s'"%(sp, start, ep, end)
+    regex = "(?=(" + start + ".*?" + end + "))"
+    try:
+        html_with_links = re.sub('<[^((a|link).*?href)].*?>', '', article.html)
+        return min(re.findall(regex, html_with_links, re.DOTALL), key=len)
+    except:
+        return 'Failed'
+
+def get_sources_from_html(html, sites):
+    ''' Searches and returns links redirected to sites within the html
+        Returns empty list if none found
+
+    Keyword arguments:
+    html            -- string of html
+    sites           -- List of site urls to look for
+    '''
     matched_urls = []
 
     for site in sites:
-        for url in re.findall("href=[\"\'][^\"\']*?" + re.escape(site) + "[^\"\']*?[\"\']", article.html, re.IGNORECASE):
+        for url in re.findall("href=[\"\'][^\"\']*?" + re.escape(site) + "[^\"\']*?[\"\']", html, re.IGNORECASE):
             matched_urls.append(url[6:-1])
     return matched_urls
 
@@ -175,27 +181,24 @@ def get_date(article):
     return 'Failed'
 
 def get_keywords(article, keywords):
+    ''' Searches and returns keywords which the article contained
+    Returns empty list otherwise
+
+    Keyword arguments:
+    article         -- 'Newspaper.Article' object of article
+    keywords        -- List of keywords
+    '''
     matched_keywords = []
     for key in keywords:
         if re.search(key, article.title + article.text, re.IGNORECASE):
             matched_keywords.append(key)
     return matched_keywords
 
-
-
-# def find_artciles(allMonitoredSites):
-#     pass
-#     #forloop(monitored sites):
-#         #SitesToArticles(Name, foreignSites):
-#             #article tp ward
-#             #war to db
-#     #return None
-
 if __name__ == '__main__':
-    a = [['cnn', 'http://cnn.com'], ['nyt', 'http://nytimes.com'],['Yahoo news','http://news.yahoo.com'], ['Google News','http://news.google.com']]
-    a = [a[3]]
-    b = populate_sites(a, True)
-    download_articles(b)
+    # a = [['cnn', 'http://cnn.com'], ['nyt', 'http://nytimes.com'],['Yahoo news','http://news.yahoo.com'], ['Google News','http://news.google.com']]
+    # a = [a[3]]
+    # b = populate_sites(a, True)
+    # download_articles(b)
 
 
 
