@@ -3,6 +3,7 @@
 import newspaper
 from newspaper import news_pool
 from newspaper import Article
+import lxml.html.clean
 
 #regex
 import re
@@ -36,7 +37,8 @@ def populate_sites(sites, from_start):
 
         # Use the url and build the metadata of the sites
         new_sites[s].append((newspaper.build(sites[s][1],
-                                             memoize_articles=not from_start)))
+                                             memoize_articles=not from_start,
+                                             keep_article_html=True)))
         end = time.time()
         print ("Populated: %-5s Found: %5i pages in %is"%(sites[s][0], new_sites[s][1].size(), end - start))
 
@@ -71,7 +73,7 @@ def download_articles(populated_sites, db_keywords, foreign_sites, db_name):
 
             if not ((title == "") or (title == "Page not found")):
                 keywords = get_keywords(art, db_keywords)
-                sources = get_sources(art, foreign_sites)
+                sources = get_sources(art.article_html, foreign_sites)
                 if not (keywords == [] and sources == []):
                     url =  art.url                                   # url       Done
                     authors = art.authors                               # author    Done
@@ -81,8 +83,6 @@ def download_articles(populated_sites, db_keywords, foreign_sites, db_name):
                     print "URL:      ", url
                     print "Author:   ", authors
                     print "Date:     ", date
-                    # print "Metadata: ", art.meta_data
-                    print art.top_node.content()
                     print "Keywords: ", keywords
                     print "Sources:  ", sources
                     # db.add_document({"_id":url, "title":title, "date":date, "author":authors, "sources":sources})
@@ -101,59 +101,8 @@ def download_articles(populated_sites, db_keywords, foreign_sites, db_name):
             print ("%is"%(time.time() - start))
             print ("\n=============================================================================================\n")
 
-def get_sources(article, sites):
-    ''' (newspaper.article.Article, list of str) -> str
-    Searches and returns links redirected to sites within the html of the article
-    If Extracting html of the article fails, search within the whole html instead
-    Returns empty list if none found
 
-    Keyword arguments:
-    article         -- 'Newspaper.Article' object of article
-    sites           -- List of site urls to look for
-    '''
-    html = get_text_html(article)
-    if html == '':
-        html = article.html
-    return get_sources_from_html(html, sites)
-
-def get_text_html(article):
-    ''' (newspaper.article.Article) -> str
-    Tries to extract and returns the html of the text of the article with
-    irrelevant tags removed
-    Returns empty string otherwise
-
-    Keyword arguments:
-    article     -- 'Newspaper.Article' object of article
-    '''
-    sc, sp, ep = 20, 0, 0
-
-
-    start = article.text[:sc]
-    end = article.text[-sc:]
-    start = re.sub("[^0-9a-zA-Z ]+", ".", start)
-    end = re.sub("[^0-9a-zA-Z ]+", ".", end)
-
-    while ("." in start and sp < len(article.text)):
-        start = article.text[sp:sc+sp]
-        start = re.sub("[^0-9a-zA-Z ]+", ".", start)
-        sp+=1
-
-    while ("." in end and ep < len(article.text)):
-        end = article.text[min(-ep, -1)-sc:min(-ep, -1)]
-        end = re.sub("[^0-9a-zA-Z ]+", ".", end)
-        ep+=1
-
-    # print "FS: %2i - '%s'\n" \
-    #       "ES: %2i - '%s'"%(sp, start, ep, end)
-    regex = "(?=(" + start + ".*?" + end + "))"
-    try:
-        html_with_links = re.sub('<[^((a|link).*?href)].*?>', '', article.html)
-        html_with_links = re.sub('&nbsp;', ' ', html_with_links)
-        return min(re.findall(regex, html_with_links, re.DOTALL), key=len)
-    except:
-        return ''
-
-def get_sources_from_html(html, sites):
+def get_sources(html, sites):
     ''' (str, list of str) -> list of str
     Searches and returns links redirected to sites within the html
     Returns empty list if none found
@@ -207,23 +156,23 @@ def get_keywords(article, keywords):
     return matched_keywords
 
 if __name__ == '__main__':
-    a = [['cnn', 'http://cnn.com'], ['nyt', 'http://nytimes.com'],['Yahoo news','http://news.yahoo.com'], ['Google News','http://news.google.com']]
-    a = [a[0]]
-    b = populate_sites(a, True)
-
-    db.connect('keywords')
-    keywords = db.get_all_keywords()
-    db.close_connection()
-    keywords = ['ebola', 'doctor', 'killed']
-
-    db.connect('sites')
-    #laterz
-    db.close_connection()
-    sites = ["nytimes.com", 'go.com', 'yahoo.com']
-
-    db.connect('articles')
-
-    download_articles(b, keywords, sites, 'articles')
+    # a = [['cnn', 'http://cnn.com'], ['nyt', 'http://nytimes.com'],['Yahoo news','http://news.yahoo.com'], ['Google News','http://news.google.com']]
+    # a = [a[0]]
+    # b = populate_sites(a, True)
+    #
+    # db.connect('keywords')
+    # keywords = db.get_all_keywords()
+    # db.close_connection()
+    # keywords = ['ebola', 'doctor', 'killed']
+    #
+    # db.connect('sites')
+    # #laterz
+    # db.close_connection()
+    # sites = ["nytimes.com", 'go.com', 'yahoo.com']
+    #
+    # db.connect('articles')
+    #
+    # download_articles(b, keywords, sites, 'articles')
 
 
 
@@ -235,7 +184,7 @@ if __name__ == '__main__':
     #         "http://www.cbc.ca/news/canada/calgary/downtown-calgary-electrical-fire-damage-will-take-days-to-rebuild-1.2796497"]
     # for url in urls:
     #     start = timeit.default_timer()
-    #     first_article = Article(url)
+    #     first_article = Article(url, keep_article_html=True)
     #     first_article.download()
     #     first_article.parse()
     #
@@ -244,9 +193,10 @@ if __name__ == '__main__':
     #     print first_article.title         # title     Done
     #     print get_date(first_article)     # date      IP
     #     print first_article.url           # url       Done
-    #     #print first_article.text          # keyword   IP
+    #     print ": " + first_article.article_html + " :"
+    #     print first_article.text          # keyword   IP
     #
-    #     print len(match_sources(get_sources(first_article), ['oregonlive.com', 'nytimes.com']) )              # sources   Done
+    #     #print len(match_sources(get_sources(first_article), ['oregonlive.com', 'nytimes.com']) )              # sources   Done
     #     print ""
     #
     # pass
@@ -257,3 +207,5 @@ if __name__ == '__main__':
     # a = db.get_keywords()
     # print a
     # db.close_connection()
+
+
