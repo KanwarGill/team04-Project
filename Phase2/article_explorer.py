@@ -19,8 +19,9 @@ import db_manager as db
 
 
 def populate_sites(sites, from_start):
-    ''' Searches through the sites using newspaper library and
-        returns list of sites with available articles populated
+    ''' (list of str, bool) -> dict of str:Newspaper
+    Searches through the sites using newspaper library and
+    returns list of sites with available articles populated
 
     Keyword arguments:
     sites         -- List of [name, url] of each site
@@ -41,9 +42,10 @@ def populate_sites(sites, from_start):
 
     return new_sites
 
-def download_articles(populated_sites):
-    ''' Download all articles from built sites and stores the metadata
-        to the database
+def download_articles(populated_sites, db_keywords, foreign_sites, db_name):
+    ''' (dict of str:newspaper.source.Source, list of str, list of str, str) -> None
+    Download all articles from built sites and stores the metadata
+    to the database
 
     Keyword arguments:
     populated_sites -- List of [name, 'built_article'] of each site
@@ -52,6 +54,8 @@ def download_articles(populated_sites):
     '''
     added, failed,no_match = 0,0,0
     start = time.time()
+
+    db.connect(db_name)
 
     for site in populated_sites:
         for art in site[1].articles:
@@ -66,10 +70,9 @@ def download_articles(populated_sites):
             print "Title:    ", title
 
             if not ((title == "") or (title == "Page not found")):
-                keywords = get_keywords(art, ['Israel', 'Soccer', 'Doctor', 'fail', 'FaIL', 'kiLLED', 'name', 'ebola'])
-                #print get_keywords(art, db.get_keywords())
-                matched_sources = get_sources(art, ["cnn.com", "nytimes.com", 'go.com', 's.com'])
-                if not (keywords == [] and matched_sources == []):
+                keywords = get_keywords(art, db_keywords)
+                sources = get_sources(art, foreign_sites)
+                if not (keywords == [] and sources == []):
                     url =  art.url                                   # url       Done
                     authors = art.authors                               # author    Done
                     date = get_date(art)                             # date      Done
@@ -79,8 +82,11 @@ def download_articles(populated_sites):
                     print "Author:   ", authors
                     print "Date:     ", date
                     # print "Metadata: ", art.meta_data
+                    print art.top_node.content()
                     print "Keywords: ", keywords
-                    print "Sources:  ", matched_sources
+                    print "Sources:  ", sources
+                    # db.add_document({"_id":url, "title":title, "date":date, "author":authors, "sources":sources})
+
                     added += 1
                 else:
                     print "URL:      ", art.url
@@ -96,27 +102,29 @@ def download_articles(populated_sites):
             print ("\n=============================================================================================\n")
 
 def get_sources(article, sites):
-    ''' Searches and returns links redirected to sites within the html of the article
-        If Extracting html of the article fails, search within the whole html instead
-        Returns empty list if none found
+    ''' (newspaper.article.Article, list of str) -> str
+    Searches and returns links redirected to sites within the html of the article
+    If Extracting html of the article fails, search within the whole html instead
+    Returns empty list if none found
 
     Keyword arguments:
     article         -- 'Newspaper.Article' object of article
     sites           -- List of site urls to look for
     '''
     html = get_text_html(article)
-    if html == 'Failed':
+    if html == '':
         html = article.html
     return get_sources_from_html(html, sites)
 
 def get_text_html(article):
-    ''' Tries to extract and returns the html of the text of the article with
-        irrelevant tags removed
-        Returns 'Failed' otherwise
+    ''' (newspaper.article.Article) -> str
+    Tries to extract and returns the html of the text of the article with
+    irrelevant tags removed
+    Returns empty string otherwise
 
-        Keyword arguments:
-        article     -- 'Newspaper.Article' object of article
-        '''
+    Keyword arguments:
+    article     -- 'Newspaper.Article' object of article
+    '''
     sc, sp, ep = 20, 0, 0
 
 
@@ -140,13 +148,15 @@ def get_text_html(article):
     regex = "(?=(" + start + ".*?" + end + "))"
     try:
         html_with_links = re.sub('<[^((a|link).*?href)].*?>', '', article.html)
+        html_with_links = re.sub('&nbsp;', ' ', html_with_links)
         return min(re.findall(regex, html_with_links, re.DOTALL), key=len)
     except:
-        return 'Failed'
+        return ''
 
 def get_sources_from_html(html, sites):
-    ''' Searches and returns links redirected to sites within the html
-        Returns empty list if none found
+    ''' (str, list of str) -> list of str
+    Searches and returns links redirected to sites within the html
+    Returns empty list if none found
 
     Keyword arguments:
     html            -- string of html
@@ -162,8 +172,9 @@ def get_sources_from_html(html, sites):
 
 
 def get_date(article):
-    ''' Searches and returns date of which the article was published
-    Returns 'Failed' otherwise
+    ''' (newspaper.article.Article) -> str
+    Searches and returns date of which the article was published
+    Returns 'N/A' otherwise
 
     Keyword arguments:
     article         -- 'Newspaper.Article' object of article
@@ -178,10 +189,11 @@ def get_date(article):
                 pass
     if dates:
         return min(dates)
-    return 'Failed'
+    return 'N/A'
 
 def get_keywords(article, keywords):
-    ''' Searches and returns keywords which the article contained
+    ''' (newspaper.article.Article, list of str) -> list of str
+    Searches and returns keywords which the article contained
     Returns empty list otherwise
 
     Keyword arguments:
@@ -195,10 +207,23 @@ def get_keywords(article, keywords):
     return matched_keywords
 
 if __name__ == '__main__':
-    # a = [['cnn', 'http://cnn.com'], ['nyt', 'http://nytimes.com'],['Yahoo news','http://news.yahoo.com'], ['Google News','http://news.google.com']]
-    # a = [a[3]]
-    # b = populate_sites(a, True)
-    # download_articles(b)
+    a = [['cnn', 'http://cnn.com'], ['nyt', 'http://nytimes.com'],['Yahoo news','http://news.yahoo.com'], ['Google News','http://news.google.com']]
+    a = [a[0]]
+    b = populate_sites(a, True)
+
+    db.connect('keywords')
+    keywords = db.get_all_keywords()
+    db.close_connection()
+    keywords = ['ebola', 'doctor', 'killed']
+
+    db.connect('sites')
+    #laterz
+    db.close_connection()
+    sites = ["nytimes.com", 'go.com', 'yahoo.com']
+
+    db.connect('articles')
+
+    download_articles(b, keywords, sites, 'articles')
 
 
 
@@ -225,3 +250,10 @@ if __name__ == '__main__':
     #     print ""
     #
     # pass
+    # db.connect('keywords')
+    # a = db.get_keywords()
+    # print a
+    # #db.add_keywords('Ebola')
+    # a = db.get_keywords()
+    # print a
+    # db.close_connection()
