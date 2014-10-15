@@ -20,22 +20,38 @@ def authorize():
     return tweepy.API(auth)
     
 
-def get_tweets(user, count):
+def get_tweets(screen_name, amount):
     ''' (str, [int]) -> list of list
     Gets amount tweets from specified users
     Returns list in format [uni tweet, uni user, str time_tweeted]
     '''
     api = authorize()
+    user = api.get_user(screen_name)
     
     tweets = []
-    i = 0
-    for tweet in tweepy.Cursor(api.user_timeline, screen_name = user).items(count):
-        tweets.append(tweet)
-        i = i + 1
-        if i == count or i%10 == 0:
-                print str(i) + " / " + str(count)
-        print tweet.text
-        print tweet.id
+    last_id = -1
+    while len(tweets) < amount and len(tweets) != user.statuses_count:
+        #check how many more tweets is needed
+        count = amount - len(tweets)
+        try:
+            new_tweets = api.user_timeline(screen_name = screen_name,
+                                       count = count)
+
+            #If there are no more tweets, finish
+            if not new_tweets:
+                break
+            #Add new tweets
+            for tweet in new_tweets:
+                tweets.append(tweet)
+            last_id = tweets[-1].id
+
+        #If limit is reached
+        except tweepy.TweepError as e:
+            print '=== Limit Reached ===.'
+            print ('Resuming in ' + str(int(WAIT_RATE/60)) + ' minute(s) and '
+                   + str(WAIT_RATE%60) + ' second(s).')
+            time.sleep((15 * 60) + 10)
+            continue
     return tweets
 
 def get_follower_count(screen_name):
@@ -43,8 +59,8 @@ def get_follower_count(screen_name):
     Gets number of followers of screen_name's account
     '''
     api = authorize()
-    u = api.get_user(screen_name)
-    return u.followers_count
+    user = api.get_user(screen_name)
+    return user.followers_count
 
 def get_followers(screen_name):
     ''' (str) -> inicode
@@ -62,9 +78,11 @@ def get_followers(screen_name):
             for user in tweepy.Cursor(api.followers, screen_name=screen_name).items():
                 followers.append(user.screen_name)
             again = False
+            #if all followers are there, return
             if len(followers) == get_follower_count(screen_name):
-                return followers 
-
+                return followers
+            
+        #if call limit is reached
         except tweepy.TweepError as e:
             if not again:
                 print '=== Limit Reached ===.'
@@ -95,11 +113,13 @@ def search_tweets(keyword, result_type, amount):
     tweets = []
     last_id = -1
     while len(tweets) < amount:
+        #check how many more tweets is needed
         count = amount - len(tweets)
         try:
             new_tweets = api.search(q=keyword, count=count,
                                     result_type = result_type,lang='en',
-                                    max_id=str(last_id - 1))
+                                    max_id=str(last_id - 1),
+                                    show_user = True)
 
             #If there are no more tweets, finish
             if not new_tweets:
@@ -112,21 +132,30 @@ def search_tweets(keyword, result_type, amount):
         #If limit is reached
         except tweepy.TweepError as e:
             print '=== Limit Reached ===.'
-            print ('resuming in' + str(int(WAIT_RATE/60)) + 'minutes and'
-                   + str(WAIT_RATE%60) + 'seconds')
+            print ('Resuming in' + str(int(WAIT_RATE/60)) + ' minute(s) and '
+                   + str(WAIT_RATE%60) + ' second(s).')
             time.sleep((15 * 60) + 10)
             continue
     return tweets
-                
+
             
 
 if __name__ == '__main__':
     #pass in the username of the account you want to download
-    for user in get_followers('apple'):
-        print ''
+    for tweet in get_tweets('acmeteam',2):
+        print tweet.text
+
+    print '============================='
+    
+    for user in get_followers('acmeteam4'):
         print user
-    print ('------')
+
+    print '============================='
+    
     print get_follower_count('apple')
+
+    print '============================='
+    
     test_search = search_tweets('acme', 'recent', 5)
     
     for tweet in test_search:
