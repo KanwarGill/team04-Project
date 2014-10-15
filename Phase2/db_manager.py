@@ -1,7 +1,6 @@
 from pymongo import *
 
 
-
 # Database Information
 DB_USER_ID = "acme"
 DB_USER_PSW = "cscc01"
@@ -40,6 +39,17 @@ def get_document(url):
     document = COLLECTION.find_one({"_id":url})
     return document
 
+def get_all_documents():
+    '''(None) -> a list of dict
+    Return a lisr of documents from COLLECTION
+    '''    
+    list_doc =[]
+    documents = COLLECTION.find()
+    for element in documents:
+        list_doc.append(element)
+    return list_doc
+         
+
 
 def set_field_value(url, field, value):
     '''(str, str, anyType) -> None
@@ -49,16 +59,16 @@ def set_field_value(url, field, value):
 
 
 
-def delete_document(url):
+def del_document(url):
     '''(str) -> None
     Delete the document given by url from the COLLECTION
     '''
-    COLLECTION.remove(url)
+    COLLECTION.remove({'_id':url})
 
 
 #Keyword functions
 
-def add_keywords(key_word):
+def add_keyword(key_word):
     '''(str) -> None
     Add a new key_word to the list in COLLECTION
     '''
@@ -66,7 +76,7 @@ def add_keywords(key_word):
 
 
 
-def get_keywords():
+def get_all_keywords():
     '''(None) - > list of str
     Return a list of keywords in COLLECTION
     '''
@@ -74,6 +84,18 @@ def get_keywords():
     return list
 
 
+def del_keyword(key_word):
+    '''(str) - > None
+    Delete key_word from the list in COLLECTION
+    '''    
+    COLLECTION.update({'_id':1},{'$pull': {"list":key_word}})
 
-
+def del_all_keywords():
+    '''(None) - > None
+    Empty the list of keywords in COLLECTION
+    '''       
+    list = COLLECTION.find_one()["list"]
+    for ele in list:
+        COLLECTION.update({'_id':1},{'$pull':{"list":ele}})
+    
 
