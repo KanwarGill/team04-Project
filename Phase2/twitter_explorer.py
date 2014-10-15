@@ -30,6 +30,7 @@ def get_tweets(screen_name, amount):
     
     tweets = []
     last_id = -1
+    #incase user asks for more tweets than avaliable
     while len(tweets) < amount and len(tweets) != user.statuses_count:
         #check how many more tweets is needed
         count = amount - len(tweets)
@@ -137,6 +138,9 @@ def search_tweets(keyword, result_type, amount):
             time.sleep((15 * 60) + 10)
             continue
     return tweets
+
+def add_tweet():
+    pass
 
             
 
