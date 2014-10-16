@@ -321,17 +321,17 @@
 			.image.left
 			{
 				float: left;
-				width: 33%;
+				width: 20%;
 				margin: 2.5em 2.5em 2.5em 2.5em;
-				padding: 0em 2em 3em 0em;
+				padding: 0em 2em 10% 0em;
 			}
 
 			.image.right
 			{
 				float: right;
-				width: 33%;
+				width: 20%;
 				margin: 2.5em 2.5em 2.5em 2.5em;
-				padding: 0em 0em 3em 2em;
+				padding: 0em 0em 5% 2em;
 			}
 		
 			.image.centered
