@@ -35,11 +35,11 @@
 							<span>Team 4</span>
 						</div>
 					
-						<!-- Nav -->
+					<!-- Nav -->
 						<nav id="nav">
 							<ul>
 								<li><a href="index.html">Team</a></li>
-								<li>
+								<li class="current">
 									<a href="">Project</a>
 									<ul>
 										<li><a href="StateOfProject.html">State of Project</a></li>
@@ -88,7 +88,7 @@
 										</li>
 									</ul>
 								</li>
-								<li class="current"><a href="SystemMetaphor.html">System Metaphor</a></li>
+								<li><a href="SystemMetaphor.html">System Metaphor</a></li>
 							</ul>
 						</nav>
 					
@@ -100,65 +100,17 @@
 				<div class="container">
 					<div class="row">
 						<section class="box feature">
-							<div class="inner" style="font-size: large">
+							<div class="inner">
 								<header>
-									<h3 align="center">System Metaphor</h3>
+									<h2 align="center">State of Project</h2>
 								</header>
-								<!--<a class="image centered" width="50%"><img src="images/ResearcherPic.jpg" alt="" /></a>-->
-								<br>
-								<h3><i>Overview</i></h3> 
-								<p>The system works like <b>Voyage</b>.  
-								Departing from the <b>Starting</b> point given by the <b>Sailor</b> or <b>Captain</b>, 
-								it <b>Explores</b> the world within certain <b>Scope</b>. During the <b>Voyage</b>, 
-								The system collects and <b>Save</b> the data which will be <b>Analyzed</b> and used to <b>Make a Map</b>. </p>
-								<br><br>
-								<h3><i>Keywords</i></h3>
-								<b style="font-size: 110%">Starting point -</b>  the original source where we start with. It usually comes from user’s input (typically the article URL)
-								<br><br>
-
-								<b style="font-size: 110%">Explore -</b>  the process that the system searches and collects data among online news sources that which link to, quote, and mention the <b>Starting point</b>. 
-								<br><br>
-								<a class="image centered" ><img src="images/SystemMetaphor/Scope.jpg" alt="" style="width: 33% !important"/></a>
-								<br>
-
-								<b style="font-size: 110%">Save -</b> store collected data for further use (eg. To <b>Make a Map</b>, <b>Convert</b> and <b>Analyze</b>)
-								<br><br>
-
-								<b style="font-size: 110%">Map -</b> an interactive visualization.
-								Each <b>point</b> represents one specific news source, and the other points linking to that point are other online sources
-								(English-languge news sources and twitter users) which link to, quote, and mention that original source.
-								<br><br>
-								<a class="image centered" ><img src="images/SystemMetaphor/Map1.jpg" alt="" style="width: 90% !important"/></a>
-								<br>
-
-								<b style="font-size: 110%">Make a Map -</b> making a <b>Map</b> (an interactive visualization like the upper-right picture) by using data collected through <b>Explore</b>. 
-								<br><br>
-
-								<b style="font-size: 110%">Scope -</b> a list of global English-language news sources that are monitored. <b>Explore</b> cannot be operated outside the <b>Scope</b>.
-            					Also, users can set the Scope to define a list of global English-language news sources to monitor.
-            					<br><br>
-								<a class="image centered" ><img src="images/SystemMetaphor/Map2.jpg" alt="" style="width: 40% !important"/></a>
-								<br>
-
-								<b style="font-size: 110%">Convert -</b> retrieve particular stored data in other formats such as XML, JSON or Web ARChive (WARC).
-            					<br><br>
-
-								<b style="font-size: 110%">Analyze -</b> get statistics based on the collected data, or sort data by some features.
-            					<br><br>
-
-								<b style="font-size: 110%">Sailor -</b> a kind of users with restricted permissions. 
-								They can only perform normal operations such as <b>Explore</b>, <b>Save</b>, and <b>Make a Map</b>. (Usually for researchers)
-								<br><br>
-								<a class="image centered" ><img src="images/SystemMetaphor/Sailor.jpg" alt="" style="width: 45% !important"/></a>
-								<br>
-
-								<b style="font-size: 110%">Captain -</b>  a kind of users with all permissions, they take control of all <b>Sailor</b> users. In addition to the <b>Sailor</b>’s permissions, they can change edit the configuration file, use terminal and so on. (Usually for Librarians)
-								<br><br>
-								<a class="image centered" ><img src="images/SystemMetaphor/Captain.jpg" alt="" style="width: 30% !important"/></a>
-
-
-
-
+								<p><br>
+									For Team Acme, Phase Two was about building a strong base for our system and improving our Phase One. Phase One was a planning process where our team decided on what things we are looking for in the final project. We created two personas, a librarian and a researcher. However, this was not enough; there were two other users who may use the system so it was important to include them. With the addition of librarian programmer and graduate student personas came new and changed user stories. We made the user stories more clear and testable. There were also other minor changes we made along the way, such as cleaning up our introductions.
+									Our team has 2-3 face-to-face meetings weekly, allowing us to be very agile in our development process. We are constantly able to talk to each other about the development process and assist each other if needed. This also allowed us to iterate over changes as a team. When we couldn't meet in person we would discuss project related work using the mobile app WhatsApp with a quick reply policy. This allowed us to get information as quick as possible from the other members in our group.<br><br>
+									For Phase Two, we were mainly building upon some of the user stories that we had come up with for the librarian and researcher during Phase One. We chose Python as our programming language because we were able to find all the APIÕs necessary for the system to be fully compatible with Python. Then, we focused on setting up a database using MongoDB to store any data we might need, such as tweet or article data. We also began implementing functions to web scrape news sites using newspaper API, along with using a Python based Twitter API to search tweets and get information from users. We also created CRC cards that we needed now and in the forecasted future of the project. Moving forward we will need to start looking at a way to analyze and come up with statistics based on the data we scrape from articles and tweets. Along with that we will need to start testing functions with sample sources and sites to see if our methods for this project is appropriate.<br><br>
+									Like any project, there were problems and obstacles that our team had to overcome. The first problem we ran into was choosing a language to develop in. Our team was a little split, so we decided to try and look for a language with a lot of libraries, which were relevant to the project. Then, our decision came down to Python. After finding what libraries were available we decided to use Python 2.7x due to compatibility issues. One obstacle we still have is working with WARC files, as we have not found a library that is consistent in its formatting when creating WARC files. We have thought of alternatives, however we are still constantly looking for anything that can help us work with WARC files. <br><br>
+									Overall, we believe that Phase Two has been a success. We feel that we are keeping up with our re-evaluated release plan, user stories and personas. We have successfully begun the full implementation of our article, and tweet scraping functions with the help of newspaper and Tweepy libraries, along with setting up a database with PyMongo. We have completed most of the user stories from our iteration plan that includes User Story #1, 2, 5, 8, 13, 14. Our Iteration Plan is only left with the User Story #6 which is due to the fact that the Priority of it is Low and the Cost for implementing it is 3 days. Even though we could not completely follow our Iteration Plan, We feel that we have efficiently set up the pathway for the rest of our Iterations. Also, we believe that we have made good use of our GitHub repository, as all users have contributed and have committed with good messages. We look forward to moving on with the rest of our project in the same manner.
+								</p>
 							</div>
 						</section>
 					</div>
