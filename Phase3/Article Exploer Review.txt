@@ -1,0 +1,4 @@
+File:article_exploer.py
+Time:Nov 12 20:00 version
+
+After runing through the program and review the code, article_exploer is pretty well done. Every function followed our expected purpose and function. It has very good doc string and is user friendly. Also the whole file looks very clean . But there are some thing can be improve as well. First of all, each function is long and with so less comment. It is hard to understanding and modify for upcoming programmer. Second, it¡¯s doesn¡¯t follow the PEP8 style so well. For example, line 215 line lane is run out so much.. And the last and it is most important is there is not any test case at this moment. It is hard to tell there is no bug if just runing by typing into the console. Also using hand typing testing is kind of wasting time and man power. Hopefully, Roger could improve the remain the quality and improve his programing style at the same time.
