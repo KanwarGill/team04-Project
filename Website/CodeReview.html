@@ -140,8 +140,8 @@
 
 								<br><br>
 
-								File:twitter_explorer.py, test_twitter_explorer.py<br>
-								Time:Nov 11 21:00 version<br>
+								File: twitter_explorer.py, test_twitter_explorer.py<br>
+								Time: Nov 11 21:00 version<br>
 								Reviewed by: Jai Sughand<br>
 
 								Kyle’s twitter explorer code had correct outputs of all the functions that we had discussed in the meetings. However, he needs to catch all types of exceptions that twitter API might cause. In line 55, he catches only one type of exception but not all.
@@ -149,19 +149,26 @@
 
 								<br><br>
 
-								File:article_explorer.py<br>
-								Time:Nov 12 20:00 version<br>
+								File: article_explorer.py, test_article_explorer<br>
+								Time: Nov 13 20:00 version<br>
 								Reviewed by: Ryan Pan<br>
 
-								After going through the program and reviewing the code, article_explorer seems pretty well done. Every function followed our expected purpose and gave appropriate output. The functionality and variable naming are pretty good. It has very understandable doc strings. Also, the whole file looks very clean. But there are some thing can be improve as well. First of all, each function is long and with so less comment. It is hard to understand and modify for upcoming programmer. Second, it doesn’t follow the PEP8 style so well. For example, line 215 is over 80 chars limit. Lastly, there is not any test case at this moment. It is hard to tell if there is bug by running into the console. Hopefully, Roger could improve the quality, programming style and add test cases earlier.
-								
+								After going through the program and reviewing the code, article_explorer seems pretty well done. Every function followed our expected purpose and gave appropriate output. The functionality and variable naming are pretty good. It has very understandable doc strings. Also, the whole file looks very clean. But there are some thing can be improve as well. First of all, each function is long and with so less comment. It is hard to understand and modify for upcoming programmer. Second, it doesn’t follow the PEP8 style so well. For example, line 215 is over 80 chars limit. For testing, Roger covered most of the areas of extreme cases. He used sample variables (kind of like stubs) to test function independently. 								
 								<br><br>
 
-								File:executer.py<br>
-								Time:Nov 12 23:00 version<br>
+								File: executer.py, test_executer.py<br>
+								Time: Nov 13 20:00 version<br>
 								Reviewed by: Roger Wang<br>
 
-								Yuya’s executer functions took care of all the cases and bugs that might cause an error. The behaviour of the code was as wanted by the team. The run, pause, stop functions performed expected results and gave appropriate exceptions. However, no docstring, comments, test cases were produced due to lack of time. Yuya should work more on comments and test cases too rather than perfecting the program by manual testing. PEP8 style of coding was correctly used. Spaces, indentations, commas in lines like 89 and 135 demonstrate that. Code was well organised and import statements were all on top of the file. Yuya is currently working on testing and commenting the code and will be reviewed in the future.
+								Yuya’s executer functions took care of all the cases and bugs that might cause an error. The behaviour of the code was as wanted by the team. The run, pause, stop functions performed expected results and gave appropriate exceptions. The DocStrings were meaningful and I could understand the code quickly. Yuya should put more comments in the code though because other programmers might need to modify the code. PEP8 style of coding was correctly used. Spaces, indentations, commas in lines like 89 and 135 demonstrate good style. Code was well organised and import statements were all on top of the file. Yuya used regression testing on for his functions. However he should consider more corner cases like the input file does not exist to catch the exception on line 55. Overall, the quality of coding seems good.
+
+								<br><br>
+
+								File: Frontend/.*<br>
+								Time: Nov 13 14:00 version<br>
+								Reviewed by: Yuya Iwabuchi<br>
+
+								Jai has done a pretty good job building a UI using Django. Many user stories functionalities were covered by the features Jai implemented. The UI was manually tested by me and the entire team. The PEP8 guidelines of coding was practiced well including the fucntion naming and variable naming. However, Jai did not make any docstrings in his code yet. He should comment and put docstrings while development instead of doing it later. Testing of the Django will be done using Django Test Api in the next iteration by Jai due to lack of time.
 
 
 							</div>
