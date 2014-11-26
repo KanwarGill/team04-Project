@@ -1,6 +1,0 @@
-File(s): twitter_explorer.py, test_twitter_explorer.py
-Time: Nov 26 13:52 version
-Reviewed by: Ryan Pan
-
-
-    The functions within twitter_explorer.py are the ones we have discussed as a group. Going over the code we can see that it is complete. All functions are correct. For example on lines 124-135 in get_tweets one can see that the code is complete as count will iterate to end the while loop, and the try is matched with an appropriate except block. Each function outputs the correct data (or none at all) as we have discussed in out group. Each function follows pep-8 style of docstrings and variable naming, along with this there are good comments which makes following along with the code easy. Variable naming is meaningful, for example tweet_list is a list of tweet objects, and tweet_id is the ID of the tweet. The test cases have been updated to resemble the new optimised functions such as get_tweets and get_sources. The test case also has a few edge cases and a stress test to ensure continuous performance. Overall this has been an improvement from the last review, but some of the lines still go over 80 characters (ie. line 177). The code is of good quality and theres is no repeating code in twitter_explorer, it is consistent, and easy to maintain.
