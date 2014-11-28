@@ -1,0 +1,18 @@
+File(s): twitter_explorer.py, test_twitter_explorer.py
+Time: Nov 26 13:52 version
+Reviewed by: Ryan Pan
+
+
+    The functions within twitter_explorer.py are the ones we have discussed as a group. Going over the code we can see that it is complete. All functions are correct. For example on lines 124-135 in get_tweets one can see that the code is complete as count will iterate to end the while loop, and the try is matched with an appropriate except block. Each function outputs the correct data (or none at all) as we have discussed in out group. Each function follows pep-8 style of docstrings and variable naming, along with this there are good comments which makes following along with the code easy. Variable naming is meaningful, for example tweet_list is a list of tweet objects, and tweet_id is the ID of the tweet. The test cases have been updated to resemble the new optimised functions such as get_tweets and get_sources. The test case also has a few edge cases and a stress test to ensure continuous performance. Overall this has been an improvement from the last review, but some of the lines still go over 80 characters (ie. line 177). The code is of good quality and theres is no repeating code in twitter_explorer, it is consistent, and easy to maintain.
+
+File(s): visualizer.py
+Time:
+Reviewed by: Kyle Bridgemohansingh
+
+The functions within visualizer.py are the types of visualizations we decieded that we wanted as a group. We also beleive that this coincide's with our clients wants. All the functions within visualizer.py run properly, and all of them are complete. Jai and I went over the for loops to see that they would all start and complete each time. Looking over the code I can see it is very pythonic and following appropriate naming conventions. For example max_dim follows pep8 and appropriatly represents max dimension. I believe the the naming is accurate allowing the code to be easily maintainable. The docstrings included are representative of the parameters needed, as well as the description and output. It is easy to understand. Unfortunately, comments were a bit lacking so following the code may be troublesome if you're not familiar with some of the packages used. I would like to see a few more comments added for each block of code (if not straight forward). Some of the lines go well over 80 characters, but other than that I feel like this code is of good quality and will be easy to maintain with addition of some more comments. We did not decide to include testing for visualizer.py
+
+File(s): warc_creator.py
+Time:
+Reviewed by: Xiang Wang (Roger)
+
+Looking at Ryan's Code it is easy to see that it is correct, it uses our config.yaml, however there are two functions that are very similar. Only a difference of about 6 or 7 characters, so it would probably have been better to make it as one function. As mentioned previously the code is simple and it is easy to see that it is complete. The code is pythonic, however it does not follow pep8 conventions perfectly. The input type for the docstrings are not very clear, for example line 8 says, "(url)->None", but I have no idea what url is. Is it a string? int? I need to know this stuff. There is a lack of comments, however this may be appropriate as the code is very simple, and most of the code speaks for itself. 
