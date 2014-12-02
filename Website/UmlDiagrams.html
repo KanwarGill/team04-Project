@@ -165,7 +165,8 @@
 									<h2 align="center" style="font-size: 200% !important">Design Pattern - Facade</h2>
 								</header>
 								<br><br>
-
+								One of the design pattern that was used by us for this project was "Facade". As you can see in the diagrams below, Django_ui does not need to deal with article_explorer and twitter_explorer. It just needs to deal with the executer that calls functions from article_explorer and twitter_explorer. We implemented our execution in this structure because adding more features (ex. instagram_explorer) can be easily done. All the import statements and functions would be added to executer and django_ui would not be affected at all. This independency allowed us to work on ui and backend individually without interfering each other.
+								<br><br>
 								<a class="image centered"><img src="images/VoyagePatternUML.png" alt="" style="width: 70% !important"/></a>
 								<br><br>
 								<a class="image centered"><img src="images/VoyagePatternSequence.png" alt="" style="width: 60% !important"/></a>
